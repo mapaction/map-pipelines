@@ -1,6 +1,6 @@
 format_version: 9
 common:
-  run-map-create: &run-map-create
+  run-map-create: &run_map_create
     - stage-run-map-create:
         jobs:
           job-run-map-create:
@@ -61,5 +61,5 @@ pipelines:
       mappipelines:
         type: configrepo
     stages:
-      - *run-map-create
+      - *run_map_create
 
