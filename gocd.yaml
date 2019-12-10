@@ -1,56 +1,4 @@
 format_version: 9
-common:
-  run-map-create: &run_map_create
-    - stage-run-map-create:
-        jobs:
-          job-run-map-create:
-            resources:
-              - arcmap10-6
-            artifacts:
-              - build:
-                  source: GIS/3_Mapping/34_Map_Products_MapAction
-                  destination: maps
-            tasks:
-              - exec:
-                  command: "C:/py27arcgis106/ArcGIS10.6/python.exe"
-                  arguments:
-                    - "-m"
-                    - virtualenv
-                    - "--system-site-packages"
-                    - env
-              - exec:
-                  command: ".env/Scripts/python.exe"
-                  arguments:
-                  - "-m"
-                  - pip
-                  - install
-                  - mapactionpy-controller
-              - exec:
-                  command: ".env/Scripts/python.exe"
-                  arguments:
-                  - "-m"
-                  - pip
-                  - install
-                  - mapactionpy-arcmap
-              - exec:
-                  command: cmd
-                  arguments:
-                  - "/c"
-                  - ".env/Scripts/python.exe" 
-                  - "-m"
-                  - mapactionpy_controller.check_naming_convention
-                  - "%pipeline_cmf_description_path%"
-              - exec:
-                  command: cmd
-                  arguments:
-                  - "/c"
-                  - ".env/Scripts/python.exe" 
-                  - "-m"
-                  - mapactionpy_arcmap.arcmap_runner 
-                  - "--cmf"
-                  - "%pipeline_event_description_path%"
-                  - "--product"
-                  - "Country Overview with Admin 1 Boundaries & P-Codes"
 
 pipelines:
   build-maps:
@@ -60,6 +8,54 @@ pipelines:
     materials:
       mappipelines:
         type: configrepo
+        destination: configyaml
     stages:
-      - *run_map_create
-
+      - stage-run-map-create:
+          jobs:
+            job-run-map-create:
+              artifacts:
+                - build:
+                    source: GIS/3_Mapping/34_Map_Products_MapAction
+                    destination: maps
+              tasks:
+                - exec:
+                    command: "C:/py27arcgis106/ArcGIS10.6/python.exe"
+                    arguments:
+                      - "-m"
+                      - virtualenv
+                      - "--system-site-packages"
+                      - env
+                - exec:
+                    command: ".env/Scripts/python.exe"
+                    arguments:
+                    - "-m"
+                    - pip
+                    - install
+                    - mapactionpy-controller
+                - exec:
+                    command: ".env/Scripts/python.exe"
+                    arguments:
+                    - "-m"
+                    - pip
+                    - install
+                    - mapactionpy-arcmap
+                - exec:
+                    command: cmd
+                    arguments:
+                    - "/c"
+                    - ".env/Scripts/python.exe" 
+                    - "-m"
+                    - mapactionpy_controller.check_naming_convention
+                    - "%pipeline_cmf_description_path%"
+                - exec:
+                    command: cmd
+                    arguments:
+                    - "/c"
+                    - ".env/Scripts/python.exe" 
+                    - "-m"
+                    - mapactionpy_arcmap.arcmap_runner 
+                    - "--cmf"
+                    - "%pipeline_event_description_path%"
+                    - "--product"
+                    - "Country Overview with Admin 1 Boundaries & P-Codes"
+                  
