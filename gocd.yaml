@@ -62,13 +62,4 @@ pipelines:
         type: configrepo
     stages:
       - *run-map-create
-  test-data-maps:
-    group: Integration-Testing-Group
-    label_template: ${COUNT}
-    lock_behavior: unlockWhenFinished
-    materials:
-      mappipelines:
-        type: configrepo
-    stages:
-      - *run-map-create
 
