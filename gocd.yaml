@@ -13,6 +13,8 @@ pipelines:
       - stage-run-map-create:
           jobs:
             job-run-map-create:
+              resources:
+               - arcmap10-6
               artifacts:
                 - build:
                     source: GIS/3_Mapping/34_Map_Products_MapAction
