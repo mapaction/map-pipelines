@@ -19,22 +19,28 @@ pipelines:
                     destination: maps
               tasks:
                 - exec:
-                    command: "C:/py27arcgis106/ArcGIS10.6/python.exe"
+                    command: cmd
                     arguments:
+                      - "/c"
+                      - "C:/py27arcgis106/ArcGIS10.6/python.exe"
                       - "-m"
                       - virtualenv
                       - "--system-site-packages"
                       - env
                 - exec:
-                    command: ".env/Scripts/python.exe"
+                    command: cmd
                     arguments:
+                      - "/c"
+                    - ".env/Scripts/python.exe"
                     - "-m"
                     - pip
                     - install
                     - mapactionpy-controller
                 - exec:
-                    command: ".env/Scripts/python.exe"
+                    command: cmd
                     arguments:
+                      - "/c"
+                    - ".env/Scripts/python.exe"
                     - "-m"
                     - pip
                     - install
