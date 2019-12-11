@@ -14,7 +14,7 @@ pipelines:
           jobs:
             job-run-map-create:
               resources:
-               - arcmap10-6
+                - arcmap10-6
               artifacts:
                 - build:
                     source: GIS/3_Mapping/34_Map_Products_MapAction
@@ -33,37 +33,37 @@ pipelines:
                     command: cmd
                     arguments:
                       - "/c"
-                    - ".env/Scripts/python.exe"
-                    - "-m"
-                    - pip
-                    - install
-                    - mapactionpy-controller
+                      - ".env/Scripts/python.exe"
+                      - "-m"
+                      - pip
+                      - install
+                      - mapactionpy-controller
                 - exec:
                     command: cmd
                     arguments:
                       - "/c"
-                    - ".env/Scripts/python.exe"
-                    - "-m"
-                    - pip
-                    - install
-                    - mapactionpy-arcmap
+                      - ".env/Scripts/python.exe"
+                      - "-m"
+                      - pip
+                      - install
+                      - mapactionpy-arcmap
                 - exec:
                     command: cmd
                     arguments:
-                    - "/c"
-                    - ".env/Scripts/python.exe" 
-                    - "-m"
-                    - mapactionpy_controller.check_naming_convention
-                    - "%pipeline_cmf_description_path%"
+                      - "/c"
+                      - ".env/Scripts/python.exe" 
+                      - "-m"
+                      - mapactionpy_controller.check_naming_convention
+                      - "%pipeline_cmf_description_path%"
                 - exec:
                     command: cmd
                     arguments:
-                    - "/c"
-                    - ".env/Scripts/python.exe" 
-                    - "-m"
-                    - mapactionpy_arcmap.arcmap_runner 
-                    - "--cmf"
-                    - "%pipeline_event_description_path%"
-                    - "--product"
-                    - "Country Overview with Admin 1 Boundaries & P-Codes"
+                      - "/c"
+                      - ".env/Scripts/python.exe" 
+                      - "-m"
+                      - mapactionpy_arcmap.arcmap_runner 
+                      - "--cmf"
+                      - "%pipeline_event_description_path%"
+                      - "--product"
+                      - "Country Overview with Admin 1 Boundaries & P-Codes"
                   
