@@ -52,15 +52,15 @@ pipelines:
                       - "-m"
                       - mapactionpy_controller.check_naming_convention
                       - "%cmf_description_path%"
-                - exec:
-                    command: "env/Scripts/python.exe"
-                    arguments:
-                      - "-m"
-                      - mapactionpy_arcmap.arcmap_runner 
-                      - "--cmf"
-                      - "%cmf_path%"
-                      - "--product"
-                      - "Country Overview with Admin 1 Boundaries & P-Codes"
+                # - exec:
+                #     command: "env/Scripts/python.exe"
+                #     arguments:
+                #       - "-m"
+                #       - mapactionpy_arcmap.arcmap_runner 
+                #       - "--cmf"
+                #       - "%cmf_path%"
+                #       - "--product"
+                #       - "Country Overview with Admin 1 Boundaries & P-Codes"
                 - exec:
                     command: "robocopy"
                     arguments:
