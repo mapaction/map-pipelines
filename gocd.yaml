@@ -20,7 +20,7 @@ pipelines:
                 - arcmap10-6
               artifacts:
                 - build:
-                    source: GIS/3_Mapping/34_Map_Products_MapAction
+                    source: outputmaps
                     destination: maps
               tasks:
                 - exec:
@@ -61,4 +61,9 @@ pipelines:
                       - "%cmf_path%"
                       - "--product"
                       - "Country Overview with Admin 1 Boundaries & P-Codes"
-                  
+                - exec:
+                    command: "robocopy"
+                    arguments:
+                      - "%cmf_path%\\GIS\\3_Mapping\\34_Map_Products_MapAction"
+                      - outputmaps
+                      - "/mir"
