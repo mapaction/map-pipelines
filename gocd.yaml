@@ -4,7 +4,7 @@ pipelines:
   build-maps:
     group: Map-Creation-Group
     environment_variables:
-      cmf_description_path: testing
+      cmf_description_path: \\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools\\cmf_description.json
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
     materials:
