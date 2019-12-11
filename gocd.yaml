@@ -1,7 +1,63 @@
 format_version: 9
+common:
+  task_venv: &task_venv
+    - exec:
+        command: cmd
+        arguments:
+          - "/c"
+          - "C:/py27arcgis106/ArcGIS10.6/python.exe"
+          - "-m"
+          - virtualenv
+          - "--system-site-packages"
+          - env
+
+  install_stable: &install_stable
+    - exec:
+        command: "env/Scripts/python.exe"
+        arguments:
+          - "-m"
+          - pip
+          - install
+          - mapactionpy-controller
+    - exec:
+        command: "env/Scripts/python.exe"
+        arguments:
+          - "-m"
+          - pip
+          - install
+          - mapactionpy-arcmap==0.7.dev171
+
+  make_map: &make_map
+    - exec:
+        command: "env/Scripts/python.exe"
+        arguments:
+          - "-m"
+          - mapactionpy_controller.check_naming_convention
+          - "%cmf_description_path%"
+    # - exec:
+    #     command: "env/Scripts/python.exe"
+    #     arguments:
+    #       - "-m"
+    #       - mapactionpy_arcmap.arcmap_runner 
+    #       - "--cmf"
+    #       - "%cmf_path%"
+    #       - "--product"
+    #       - "Country Overview with Admin 1 Boundaries & P-Codes"
+
+  extract_maps: &extract_maps
+    - exec:
+        command: "robocopy"
+        arguments:
+          - "%cmf_path%\\GIS\\3_Mapping\\34_Map_Products_MapAction"
+          - outputmaps
+          - "/mir"
+          - "/NP"
+          - "*.jpg"
+
+
 
 pipelines:
-  build-maps:
+  deployment-maps:
     group: Map-Creation-Group
     environment_variables:
       cmf_description_path: "\\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools\\cmf_description.json"
@@ -23,49 +79,51 @@ pipelines:
                     source: outputmaps
                     destination: maps
               tasks:
-                - exec:
-                    command: cmd
-                    arguments:
-                      - "/c"
-                      - "C:/py27arcgis106/ArcGIS10.6/python.exe"
-                      - "-m"
-                      - virtualenv
-                      - "--system-site-packages"
-                      - env
+                - *task_venv
+                - *install_stable
+                - *make_map
+                - *extract_maps
+
+  test-maps-lka:
+    group: Integration-Testing-Map-Group
+    environment_variables:
+      cmf_description_path: "\\\\192.168.106.24\\\\Non-Mission\\development\\data_circle\\metis\\2019lka01\\cmf_description.json"
+      cmf_path: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\2019lka01"
+    label_template: ${COUNT}
+    lock_behavior: unlockWhenFinished
+    materials:
+      mappipelines:
+        type: configrepo
+        destination: configyaml
+    stages:
+      - stage-run-map-create:
+          jobs:
+            job-run-map-create:
+              resources:
+                - arcmap10-6
+              artifacts:
+                - build:
+                    source: outputmaps
+                    destination: maps
+              tasks:
+                - *task_venv
                 - exec:
                     command: "env/Scripts/python.exe"
                     arguments:
-                      - "-m"
-                      - pip
-                      - install
-                      - mapactionpy-controller
+                    - "-m"
+                    - pip
+                    - install
+                    - "-e"
+                    - mapy-controller
                 - exec:
                     command: "env/Scripts/python.exe"
                     arguments:
-                      - "-m"
-                      - pip
-                      - install
-                      - mapactionpy-arcmap==0.7.dev171
-                - exec:
-                    command: "env/Scripts/python.exe"
-                    arguments:
-                      - "-m"
-                      - mapactionpy_controller.check_naming_convention
-                      - "%cmf_description_path%"
-                # - exec:
-                #     command: "env/Scripts/python.exe"
-                #     arguments:
-                #       - "-m"
-                #       - mapactionpy_arcmap.arcmap_runner 
-                #       - "--cmf"
-                #       - "%cmf_path%"
-                #       - "--product"
-                #       - "Country Overview with Admin 1 Boundaries & P-Codes"
-                - exec:
-                    command: "robocopy"
-                    arguments:
-                      - "%cmf_path%\\GIS\\3_Mapping\\34_Map_Products_MapAction"
-                      - outputmaps
-                      - "/mir"
-                      - "/NP"
-                      - "*.jpg"
+                    - "-m"
+                    - pip
+                    - install
+                    - "-e"
+                    - mapy-arcmap
+                - *make_map
+                - *extract_maps
+
+
