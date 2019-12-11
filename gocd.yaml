@@ -30,36 +30,28 @@ pipelines:
                       - "--system-site-packages"
                       - env
                 - exec:
-                    command: cmd
+                    command: "env/Scripts/python.exe"
                     arguments:
-                      - "/c"
-                      - "env/Scripts/python.exe"
                       - "-m"
                       - pip
                       - install
                       - mapactionpy-controller
                 - exec:
-                    command: cmd
+                    command: "env/Scripts/python.exe"
                     arguments:
-                      - "/c"
-                      - "env/Scripts/python.exe"
                       - "-m"
                       - pip
                       - install
                       - mapactionpy-arcmap
                 - exec:
-                    command: cmd
+                    command: "env/Scripts/python.exe"
                     arguments:
-                      - "/c"
-                      - "env/Scripts/python.exe" 
                       - "-m"
                       - mapactionpy_controller.check_naming_convention
                       - "%pipeline_cmf_description_path%"
                 - exec:
-                    command: cmd
+                    command: "env/Scripts/python.exe"
                     arguments:
-                      - "/c"
-                      - "env/Scripts/python.exe" 
                       - "-m"
                       - mapactionpy_arcmap.arcmap_runner 
                       - "--cmf"
