@@ -33,7 +33,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - "/c"
-                      - ".env/Scripts/python.exe"
+                      - "./env/Scripts/python.exe"
                       - "-m"
                       - pip
                       - install
@@ -42,7 +42,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - "/c"
-                      - ".env/Scripts/python.exe"
+                      - "./env/Scripts/python.exe"
                       - "-m"
                       - pip
                       - install
@@ -51,7 +51,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - "/c"
-                      - ".env/Scripts/python.exe" 
+                      - "./env/Scripts/python.exe" 
                       - "-m"
                       - mapactionpy_controller.check_naming_convention
                       - "%pipeline_cmf_description_path%"
@@ -59,7 +59,7 @@ pipelines:
                     command: cmd
                     arguments:
                       - "/c"
-                      - ".env/Scripts/python.exe" 
+                      - "./env/Scripts/python.exe" 
                       - "-m"
                       - mapactionpy_arcmap.arcmap_runner 
                       - "--cmf"
