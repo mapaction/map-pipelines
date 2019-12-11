@@ -44,7 +44,7 @@ pipelines:
                       - "-m"
                       - pip
                       - install
-                      - mapactionpy-arcmap
+                      - mapactionpy-arcmap==0.7.dev171
                 - exec:
                     command: "env/Scripts/python.exe"
                     arguments:
