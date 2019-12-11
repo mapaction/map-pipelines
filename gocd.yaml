@@ -84,17 +84,23 @@ pipelines:
                 - *make_map
                 - *extract_maps
 
-  test-maps-lka:
+  test-maps-dji:
     group: Integration-Testing-Map-Group
     environment_variables:
-      cmf_description_path: "\\\\192.168.106.24\\\\Non-Mission\\development\\data_circle\\metis\\2019lka01\\cmf_description.json"
-      cmf_path: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\2019lka01"
+      cmf_description_path: "\\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools\\cmf_description.json"
+      cmf_path: "\\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools"
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
     materials:
       mappipelines:
         type: configrepo
         destination: configyaml
+      mapy-controller:
+        scm: 7b37b961-6310-45e4-9968-25a17397b6a3
+        destination: mapy-controller
+      mapy-arcmap:
+        scm: 8d4486df-9f5c-47fe-963e-ebd6ae376f83
+        destination: mapy-arcmap
     stages:
       - stage-run-map-create:
           jobs:
