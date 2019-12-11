@@ -3,6 +3,8 @@ format_version: 9
 pipelines:
   build-maps:
     group: Map-Creation-Group
+    environment_variables:
+      cmf_description_path: testing
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
     materials:
@@ -48,7 +50,7 @@ pipelines:
                     arguments:
                       - "-m"
                       - mapactionpy_controller.check_naming_convention
-                      - "%pipeline_cmf_description_path%"
+                      - "%cmf_description_path%"
                 - exec:
                     command: "env/Scripts/python.exe"
                     arguments:
