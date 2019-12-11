@@ -5,6 +5,7 @@ pipelines:
     group: Map-Creation-Group
     environment_variables:
       cmf_description_path: "\\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools\\cmf_description.json"
+      cmf_path: "\\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools"
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
     materials:
@@ -57,7 +58,7 @@ pipelines:
                       - "-m"
                       - mapactionpy_arcmap.arcmap_runner 
                       - "--cmf"
-                      - "%pipeline_event_description_path%"
+                      - "%cmf_path%"
                       - "--product"
                       - "Country Overview with Admin 1 Boundaries & P-Codes"
                   
