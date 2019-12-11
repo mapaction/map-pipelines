@@ -67,3 +67,5 @@ pipelines:
                       - "%cmf_path%\\GIS\\3_Mapping\\34_Map_Products_MapAction"
                       - outputmaps
                       - "/mir"
+                      - "/NP"
+                      - "*.jpg"
