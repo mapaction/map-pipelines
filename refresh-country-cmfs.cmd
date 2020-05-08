@@ -8,7 +8,7 @@ if not defined data_src set data_src=D:\MapAction\metis\test-data
 echo "data_src="
 echo %data_src%
 
-if not defined dest_root set dest_root=D:\MapAction\metis\test-suite
+if not defined dest_root set dest_root=output-cmfs
 echo "dest_root="
 echo %dest_root%
 
@@ -25,11 +25,11 @@ for %%G in (%opidlist%) do (
 	echo %%G
 	echo "%dest_root%\%%G"
 	
-	:: Create 
+	rem Create 
 	if not exist "%dest_root%\%%G" mkdir "%dest_root%\%%G"
-	::call "%script_root%\refresh-default-cmf.cmd" "%dest_root%\%%G" 20YYiso3nn
+	rem call "%script_root%\refresh-default-cmf.cmd" "%dest_root%\%%G" 20YYiso3nn
 	
-	:: Copy everything non-country specific from the default-cmf
+	rem Copy everything non-country specific from the default-cmf
 	robocopy ^
 		%default_cmf%/20YYiso3nn ^
 		%dest_root%\%%G ^
@@ -47,11 +47,11 @@ for %%G in (%opidlist%) do (
 		/xd 34_Map_Products_MapAction ^
 		/xf refresh-country-cmf.log
 	 
-	:: Check the error code (anything less than 8 is OK.
-	:: Greater or equal to 8 is a fail)
+	rem Check the error code (anything less than 8 is OK.
+	rem Greater or equal to 8 is a fail)
 	if %errorlevel% geq 8 goto quit_error
 
-	:: Copy `200_data_name_lookup` from the default-cmf
+	rem Copy `200_data_name_lookup` from the default-cmf
 	robocopy ^
 		%default_cmf%/20YYiso3nn/GIS/2_Active_Data/200_data_name_lookup ^
 		%dest_root%\%%G/GIS/2_Active_Data/200_data_name_lookup ^
@@ -62,11 +62,11 @@ for %%G in (%opidlist%) do (
 		/xf .gitignore ^
 		/xf enable-empty-dir-in-github.txt
 
-	:: Check the error code (anything less than 8 is OK.
-	:: Greater or equal to 8 is a fail)
+	rem Check the error code (anything less than 8 is OK.
+	rem Greater or equal to 8 is a fail)
 	if %errorlevel% geq 8 goto quit_error
 
-	:: Copy the country specific data into 2_Active_Data
+	rem Copy the country specific data into 2_Active_Data
 	robocopy ^
 		%data_src%\%%G\GIS\2_Active_Data ^
 		%dest_root%\%%G\GIS\2_Active_Data ^
@@ -77,7 +77,7 @@ for %%G in (%opidlist%) do (
 		
 	if %errorlevel% geq 8 goto quit_error
 
-	:: Copy the event description
+	rem Copy the event description
 	robocopy ^
 		%data_src%\%%G ^
 		%dest_root%\%%G event_description.json ^

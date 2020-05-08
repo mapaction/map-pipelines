@@ -50,12 +50,12 @@ common:
         command: "cmd"
         arguments:
           - "/c"
-          - "pipelines/refresh-country-cmfs.cmd"
+          - "pipelines\\refresh-country-cmfs.cmd"
     - exec:
         command: "cmd"
         arguments:
           - "/c"
-          - "pipelines/run-arcmap-runner.cmd"
+          - "pipelines\\run-arcmap-runner.cmd"
 
   extract_maps: &extract_maps
     - exec:
