@@ -13,88 +13,74 @@ common:
 
   install_stable: &install_stable
     - exec:
-        command: "env/Scripts/python.exe"
+        command: "%py%"
         arguments:
           - "-m"
           - pip
           - install
           - mapactionpy-controller
     - exec:
-        command: "env/Scripts/python.exe"
+        command: "%py%"
         arguments:
           - "-m"
           - pip
           - install
-          - mapactionpy-arcmap==0.7.dev171
+          - mapactionpy-arcmap
+
+  install_from_github: &install_from_github
+    - exec:
+        command: "%py%"
+        arguments:
+        - "-m"
+        - pip
+        - install
+        - "-e"
+        - mapy-controller
+    - exec:
+        command: "%py%"
+        arguments:
+        - "-m"
+        - pip
+        - install
+        - "-e"
+        - mapy-arcmap
 
   make_map: &make_map
     - exec:
-        command: "env/Scripts/python.exe"
+        command: "cmd"
         arguments:
-          - "-m"
-          - mapactionpy_controller.check_naming_convention
-          - "%cmf_description_path%"
+          - "/c"
+          - refresh-country-cmfs.cmd
     - exec:
-        command: "env/Scripts/python.exe"
+        command: "cmd"
         arguments:
-          - "-m"
-          - mapactionpy_arcmap.arcmap_runner 
-          - "--cmf"
-          - "%cmf_path%"
-          - "--product"
-          - "Country Overview with Admin 1 Boundaries & P-Codes"
+          - "/c"
+          - run-arcmap-runner.cmd
 
-  extract_maps: &extract_maps
-    - exec:
-        command: "robocopy"
-        arguments:
-          - "%cmf_path%\\GIS\\3_Mapping\\34_Map_Products_MapAction"
-          - outputmaps
-          - "/mir"
-          - "/NP"
-          - "*.jpg"
-
-
+  # extract_maps: &extract_maps
+  #   - exec:
+  #       command: "robocopy"
+  #       arguments:
+  #         - "%cmf_path%\\GIS\\3_Mapping\\34_Map_Products_MapAction"
+  #         - outputmaps
+  #         - "/mir"
+  #         - "/NP"
+  #         - "*.jpg"
 
 pipelines:
   deployment-maps:
     group: Map-Creation-Group
     environment_variables:
-      cmf_description_path: "\\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools\\cmf_description.json"
-      cmf_path: "\\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools"
+      data_src: \\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\example_src_data
+      dest_root: \\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite
+      default_cmf: configyaml
+      opidlist: "2019lka01 2019mli01 2019slv01"
+      py: env/Scripts/python.exe
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
     materials:
       mappipelines:
         type: configrepo
-        destination: configyaml
-    stages:
-      - stage-run-map-create:
-          jobs:
-            job-run-map-create:
-              resources:
-                - arcmap10-6
-              artifacts:
-                - build:
-                    source: outputmaps
-                    destination: maps
-              tasks:
-                - *task_venv
-                - *install_stable
-                - *make_map
-                - *extract_maps
-
-  test-maps-dji:
-    group: Integration-Testing-Map-Group
-    environment_variables:
-      cmf_description_path: "\\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools\\cmf_description.json"
-      cmf_path: "\\\\192.168.106.24\\Crash-Move-Folder\\india\\2019dji01-for-testing-automation-tools"
-    label_template: ${COUNT}
-    lock_behavior: unlockWhenFinished
-    materials:
-      mappipelines:
-        type: configrepo
-        destination: configyaml
       mapy-controller:
         scm: 7b37b961-6310-45e4-9968-25a17397b6a3
         destination: mapy-controller
@@ -113,23 +99,6 @@ pipelines:
                     destination: maps
               tasks:
                 - *task_venv
-                - exec:
-                    command: "env/Scripts/python.exe"
-                    arguments:
-                    - "-m"
-                    - pip
-                    - install
-                    - "-e"
-                    - mapy-controller
-                - exec:
-                    command: "env/Scripts/python.exe"
-                    arguments:
-                    - "-m"
-                    - pip
-                    - install
-                    - "-e"
-                    - mapy-arcmap
+                - *install_from_github
                 - *make_map
                 - *extract_maps
-
-
