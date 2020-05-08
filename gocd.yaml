@@ -50,12 +50,12 @@ common:
         command: "cmd"
         arguments:
           - "/c"
-          - pipelines/refresh-country-cmfs.cmd
+          - "pipelines/refresh-country-cmfs.cmd"
     - exec:
         command: "cmd"
         arguments:
           - "/c"
-          - pipelines/run-arcmap-runner.cmd
+          - "pipelines/run-arcmap-runner.cmd"
 
   extract_maps: &extract_maps
     - exec:
@@ -71,8 +71,8 @@ pipelines:
   deployment-maps:
     group: Map-Creation-Group
     environment_variables:
-      data_src: \\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\example_src_data
-      dest_root: \\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite
+      data_src: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\example_src_data"
+      dest_root: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite"
       default_cmf: configyaml
       opidlist: "2019lka01 2019mli01 2019slv01"
       py: "env\\Scripts\\python.exe"
