@@ -50,22 +50,22 @@ common:
         command: "cmd"
         arguments:
           - "/c"
-          - refresh-country-cmfs.cmd
+          - pipelines/refresh-country-cmfs.cmd
     - exec:
         command: "cmd"
         arguments:
           - "/c"
-          - run-arcmap-runner.cmd
+          - pipelines/run-arcmap-runner.cmd
 
-  # extract_maps: &extract_maps
-  #   - exec:
-  #       command: "robocopy"
-  #       arguments:
-  #         - "%cmf_path%\\GIS\\3_Mapping\\34_Map_Products_MapAction"
-  #         - outputmaps
-  #         - "/mir"
-  #         - "/NP"
-  #         - "*.jpg"
+  extract_maps: &extract_maps
+    - exec:
+        command: "robocopy"
+        arguments:
+          - "%cmf_path%\\GIS\\3_Mapping\\34_Map_Products_MapAction"
+          - outputmaps
+          - "/mir"
+          - "/NP"
+          - "*.jpg"
 
 pipelines:
   deployment-maps:
@@ -81,6 +81,7 @@ pipelines:
     materials:
       mappipelines:
         type: configrepo
+        destination: pipelines
       mapy-controller:
         scm: 7b37b961-6310-45e4-9968-25a17397b6a3
         destination: mapy-controller
@@ -101,4 +102,4 @@ pipelines:
                 - *task_venv
                 - *install_from_github
                 - *make_map
-                - *extract_maps
+                # - *extract_maps
