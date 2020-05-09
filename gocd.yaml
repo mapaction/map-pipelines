@@ -10,6 +10,13 @@ common:
           - virtualenv
           - "--system-site-packages"
           - env
+    - exec:
+        command: "%py%"
+        arguments:
+          - "-m"
+          - pip
+          - install
+          - coverage
 
   install_stable: &install_stable
     - exec:
