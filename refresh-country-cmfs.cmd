@@ -51,6 +51,10 @@ for %%G in (%opidlist%) do (
 	rem Greater or equal to 8 is a fail)
 	if %errorlevel% geq 8 goto quit_error
 
+	rem If the export dir does not exist, create it:
+	if not exist "%dest_root%\%%G/GIS/3_Mapping/34_Map_Products_MapAction" mkdir "%dest_root%\%%G/GIS/3_Mapping/34_Map_Products_MapAction"
+
+
 	rem Copy `200_data_name_lookup` from the default-cmf
 	robocopy ^
 		%default_cmf%/20YYiso3nn/GIS/2_Active_Data/200_data_name_lookup ^
