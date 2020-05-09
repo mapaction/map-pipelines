@@ -80,7 +80,7 @@ pipelines:
     environment_variables:
       data_src: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\example_src_data"
       dest_root: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite"
-      default_cmf: configyaml
+      default_cmf: default-cmf
       opidlist: "2019lka01 2019mli01 2019slv01"
       py: "env\\Scripts\\python.exe"
     label_template: ${COUNT}
@@ -89,6 +89,12 @@ pipelines:
       mappipelines:
         type: configrepo
         destination: pipelines
+      default-cmf:
+        git: https://github.com/mapaction/default-crash-move-folder.git
+        destination: default-cmf
+        branch: master
+        username: mapaction-ci-servers
+        encrypted_password : AES:/tL+kSfanw1Vz+YhfX+C7g==:3UFicQJU9iJAH7ITgi/0MsBRs0Al81OIIkwq9Qru0NPsuXsTT+tFOtKAf4JhZXI7
       mapy-controller:
         git: https://github.com/mapaction/mapactionpy_controller.git
         branch: master
