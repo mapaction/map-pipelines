@@ -20,29 +20,32 @@ echo %productlist%
 ::set opidlist=2019lka01
 
 for %%G in (%opidlist%) do (
+
 	echo "checking layer files"
-	%py% -m coverage run -m mapactionpy_controller.config_verify ^
+	%py% -m mapactionpy_controller.config_verify ^
 		--cmf "%dest_root%\%%G\cmf_description.json" ^
 		lp-vs-rendering ^
 		--layer-file-extension lyr
 
 	echo "checking config files"
-	%py% -m coverage run --append -m mapactionpy_controller.config_verify ^
+	%py% -m mapactionpy_controller.config_verify ^
 		--cmf "%dest_root%\%%G\cmf_description.json" ^
 		lp-vs-cb
 
 	echo "checking naming conventions"
-	%py% -m coverage run --append -m mapactionpy_controller.check_naming_convention ^
+	%py% -m mapactionpy_controller.check_naming_convention ^
 		"%dest_root%\%%G\cmf_description.json" 
 
 	for %%P in (%productlist%) do (
 		echo "running mapchef"
-		%py% -m coverage run --append -m mapactionpy_arcmap.arcmap_runner ^
+		%py% -m mapactionpy_arcmap.arcmap_runner ^
 			--eventConfigFile    "%dest_root%\%%G\event_description.json" ^
 			--export ^
 			--product %%P
 		)
 )
+
+rem -m coverage run  --append
 
 ::		%py% run --append -m mapactionpy_arcmap.arcmap_runner ^
 ::			--cookbook    "%root%\%%G\GIS\3_Mapping\31_Resources\316_Automation\mapCookbook.json" ^
