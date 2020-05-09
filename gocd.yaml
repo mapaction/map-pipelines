@@ -2,6 +2,13 @@ format_version: 9
 common:
   task_venv: &task_venv
     - exec:
+        command: git
+        arguments:
+        - "-C"
+        - default-cmf
+        - lfs
+        - pull
+    - exec:
         command: cmd
         arguments:
           - "/c"
