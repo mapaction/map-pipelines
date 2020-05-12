@@ -8,20 +8,17 @@ echo %script_root%
 if not defined py set py=D:\MapAction\ve-with-arcmap2\Scripts\python.exe 
 ::set py=C:/py27arcgis106/ArcGIS10.6/python.exe
 
-:: C:\py27arcgis106\ArcGIS10.6\python.exe -c 'import sys; print('\n'.join(sys.path)); import arcpy'
-%py% -m coverage run -c 'import sys; print('\n'.join(sys.path)); import arcpy'
+rem Reset coverage measurement
+if not exist %script_root%\..\.coverage del %script_root%\..\.coverage
 
-
-::set "productlist=("Country Overview with Admin 1 Boundaries and Topography", "Atlas Admin 1 Boundaries & P-Codes plus Admin 2 Boundaries""
-rem set "productlist="Country Overview with Admin 1 Boundaries and Topography", "Atlas Admin 1 Boundaries & P-Codes plus Admin 2 Boundaries""
+if not defined tempoutputs set tempoutputs=%script_root%\tempoutputs
+if not exist %tempoutputs% mkdir %tempoutputs%
+if not defined outputmaps set outputmaps=%script_root%\..\outputmaps
+if not exist %outputmaps% mkdir %outputmaps%
 
 set "productlist="Country Overview with Admin 1 Boundaries and Topography", "Atlas Admin 1 Boundaries and P-Codes plus Admin 2 Boundaries""
 
 echo %productlist%
-::for %%G in (2019lka01 2019mli01 2019slv01) do (
-
-::set opidlist=2019lka01 2019mli01 2019slv01
-::set opidlist=2019lka01
 
 for %%G in (%opidlist%) do (
 
@@ -47,18 +44,14 @@ for %%G in (%opidlist%) do (
 			--export ^
 			--product %%P
 		)
+
+	rem Ugly hack to extract maps from CMFs whilst certain tools which won't deal with UNC paths
+	robocopy %dest_root%\%%G\GIS\3_Mapping\34_Map_Products_MapAction %tempoutputs% *.jpg *.zip /mir
+	if not exist %outputmaps%\%%G mkdir %outputmaps%\%%G
+	forfiles -p %tempoutputs% -s -m *.* /c "cmd /c copy @path %outputmaps%\%%G\@file /y"
 )
 
-rem -m coverage run  --append
 
-::		%py% run --append -m mapactionpy_arcmap.arcmap_runner ^
-::			--cookbook    "%root%\%%G\GIS\3_Mapping\31_Resources\316_Automation\mapCookbook.json" ^
-::			--layerConfig "%root%\%%G\GIS\3_Mapping\31_Resources\316_Automation\layerProperties.json" ^
-::			--cmf         "%root%\%%G\cmf_description.json" ^
-::			--layerDirectory "%root%\%%G\GIS\3_Mapping\31_Resources\312_Layer_files" ^
-::			--export ^
-::			--product %%P
-::		)
 
 ::"Country Overview with Admin 1 Boundaries and Topography"
 ::"Atlas Admin 1 Boundaries & P-Codes plus Admin 2 Boundaries"
