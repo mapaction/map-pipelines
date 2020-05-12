@@ -90,7 +90,7 @@ pipelines:
       default_cmf: default-cmf
       opidlist: "2019lka01 2019mli01 2019slv01"
       py: "env\\Scripts\\python.exe"
-      outputmaps: outputmaps
+      # outputmaps: outputmaps
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
     materials:
@@ -119,7 +119,7 @@ pipelines:
                 - arcmap10-6
               artifacts:
                 - build:
-                    source: "%outputmaps%"
+                    source: outputmaps
                     destination: maps
               tasks:
                 - *task_venv
