@@ -1,2 +1,6 @@
 
 output-cmfs/
+htmlcov/
+outputmaps/
+tempoutputs/
+.coverage
