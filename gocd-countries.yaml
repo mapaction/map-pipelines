@@ -41,7 +41,5 @@ pipelines:
               resources:
                 - arcmap10-6
               tasks:
-                - *task_venv
-                - *install_from_github
-                - *make_map
+                - *task_launch
                 # - *extract_maps        
