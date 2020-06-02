@@ -1,0 +1,47 @@
+format_version: 9
+common:
+  task_venv: &task_launch
+    - exec:
+        command: cmd
+        arguments:
+          - "/c"
+          - "C:/py27arcgis106/ArcGIS10.6/python.exe"
+          - "-m"
+          - pip
+          - install
+          - "git+https://github.com/andrewphilipsmith/gocd-cli.git"
+    - exec:
+        command: cmd
+        arguments:
+          - "/c"
+          - "C:/py27arcgis106/ArcGIS10.6/python.exe"
+          - "C:/py27arcgis106/ArcGIS10.6/Scripts/gocd"
+          - trigger
+          - dummy-pipeline
+          - "--variables"
+          - MAPCHEF=%event_desc%
+          - "--wait-until-finished"
+
+
+pipelines:
+  sri-lanka:
+    group: Per-Country-Map-Creation
+    environment_variables:
+      event_desc: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite\\2019lka01\\event_description.json"
+    label_template: ${COUNT}
+    lock_behavior: unlockWhenFinished
+    materials:
+      mappipelines:
+        type: configrepo
+        destination: pipelines
+    stages:
+      - stage-launch:
+          jobs:
+            job-launch:
+              resources:
+                - arcmap10-6
+              tasks:
+                - *task_venv
+                - *install_from_github
+                - *make_map
+                # - *extract_maps        

@@ -82,7 +82,7 @@ common:
           - "*.jpg"
 
 pipelines:
-  deployment-maps:
+  map-chef:
     group: Map-Creation-Group
     environment_variables:
       data_src: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\example_src_data"
