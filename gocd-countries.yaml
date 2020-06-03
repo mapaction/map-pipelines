@@ -16,10 +16,11 @@ common:
           - "/c"
           - "C:/py27arcgis106/ArcGIS10.6/python.exe"
           - "C:/py27arcgis106/ArcGIS10.6/Scripts/gocd"
+          - pipeline  
           - trigger
           - dummy-pipeline
           - "--variables"
-          - MAPCHEF=%event_desc%
+          - MAPCHEF_EVENT_DESC=%event_desc%
           - "--wait-until-finished"
 
 
