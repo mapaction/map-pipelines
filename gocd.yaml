@@ -130,7 +130,7 @@ pipelines:
     group: Per-Country-Map-Creation
     display_order: -10
     environment_variables:
-      MAPCHEF_EVENT_DESC: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite\\2019lka01\\event_description.json"
+      MAPCHEF_EVENT_DESC: "\\\\192.168.106.24\\Crash-Move-Folder\\hotel\\20200601-kenya-oxfam\\event_description.json"
       py: "env\\Scripts\\python.exe"
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
