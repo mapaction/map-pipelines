@@ -79,8 +79,10 @@ common:
 pipelines:
   map-chef:
     group: Map-Creation-Group
+    display_order: -2
     environment_variables:
-      MAPCHEF_EVENT_DESC: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite\\2019lka01\\event_description.json"
+      # MAPCHEF_EVENT_DESC: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite\\2019lka01\\event_description.json"
+      MAPCHEF_EVENT_DESC: not-set
       # data_src: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\example_src_data"
       # dest_root: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite"
       # default_cmf: default-cmf

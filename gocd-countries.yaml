@@ -5,36 +5,23 @@ common:
         command: cmd
         arguments:
           - "/c"
-          - "C:/py27arcgis106/ArcGIS10.6/python.exe"
-          - "-m"
-          - pip
-          - install
-          - "git+https://github.com/andrewphilipsmith/gocd-cli.git"
-    - exec:
-        command: cmd
-        arguments:
-          - "/c"
-          - "C:/py27arcgis106/ArcGIS10.6/python.exe"
-          - "C:/py27arcgis106/ArcGIS10.6/Scripts/gocd"
-          - pipeline  
-          - trigger
-          - dummy-pipeline
-          - "--variables"
-          - MAPCHEF_EVENT_DESC=%event_desc%
-          - "--wait-until-finished"
-
+          - echo
+          - "%MAPCHEF_EVENT_DESC%"
 
 pipelines:
   sri-lanka:
     group: Per-Country-Map-Creation
+    display_order: -10    
     environment_variables:
-      event_desc: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite\\2019lka01\\event_description.json"
+      MAPCHEF_EVENT_DESC: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite\\2019lka01\\event_description.json"
+      # event_desc: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite\\2019lka01\\event_description.json"
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
     materials:
-      mappipelines:
-        type: configrepo
-        destination: pipelines
+      domapchef:
+        pipeline: map-chef
+        stage: stage-run-map-create
+        ignore_for_scheduling: false
     stages:
       - stage-launch:
           jobs:
@@ -43,4 +30,4 @@ pipelines:
                 - arcmap10-6
               tasks:
                 - *task_launch
-                # - *extract_maps        
+                # - *extract_maps
