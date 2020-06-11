@@ -8,6 +8,7 @@ echo %script_root%
 
 :: Use this as a test of whether or not we are running on a local machine or on GoCD
 if not defined py set opidlist=2019lka01 2019mli01 2019slv01
+if not defined py set opidlist=2019lka01
 if not defined py set outputmaps=%script_root%\outputmaps
 if not defined py set py=D:\MapAction\ve-with-arcmap2\Scripts\python.exe 
 ::set py=C:/py27arcgis106/ArcGIS10.6/python.exe
@@ -22,7 +23,7 @@ if not exist %outputmaps% mkdir %outputmaps%
 if not defined dest_root set dest_root=%script_root%\output-cmfs
 
 
-set "productlist="Country Overview with Admin 1 Boundaries and Topography", "Atlas Admin 1 Boundaries and P-Codes plus Admin 2 Boundaries""
+set "productlist="Country Overview with Admin 1 Boundaries and Topography", "Country Overview with Admin 1 Boundaries", "Country Overview with Admin 1 and 2 Boundaries", "Country Overview with Transport", "Atlas Admin 1 Boundaries and P-Codes plus Admin 2 Boundaries""
 
 echo %productlist%
 
