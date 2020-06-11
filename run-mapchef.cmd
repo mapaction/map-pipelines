@@ -12,8 +12,7 @@ if not exist %tempoutputs% mkdir %tempoutputs%
 if not defined outputmaps set outputmaps=%script_root%\..\outputmaps
 if not exist %outputmaps% mkdir %outputmaps%
 
-
-set "productlist="Country Overview with Admin 1 Boundaries and Topography", "Atlas Admin 1 Boundaries and P-Codes plus Admin 2 Boundaries""
+set "productlist="Country Overview with Admin 1 Boundaries and Topography", "Country Overview with Admin 1 Boundaries", "Country Overview with Admin 1 and 2 Boundaries", "Country Overview with Transport", "Atlas Admin 1 Boundaries and P-Codes plus Admin 2 Boundaries""
 
 for %%P in (%productlist%) do (
 	echo "running mapchef"
