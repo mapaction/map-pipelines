@@ -126,43 +126,43 @@ pipelines:
                 # - *extract_maps
 
 
-  kenya:
-    group: Per-Country-Map-Creation
-    display_order: -10
-    environment_variables:
-      MAPCHEF_EVENT_DESC: "\\\\192.168.106.24\\Crash-Move-Folder\\hotel\\20200601-kenya-oxfam\\event_description.json"
-      py: "env\\Scripts\\python.exe"
-    label_template: ${COUNT}
-    lock_behavior: unlockWhenFinished
-    materials:
-      mappipelines:
-        type: configrepo
-        destination: pipelines
-      default-cmf:
-        git: https://github.com/mapaction/default-crash-move-folder.git
-        destination: default-cmf
-        branch: master
-        username: mapaction-ci-servers
-        encrypted_password : AES:/tL+kSfanw1Vz+YhfX+C7g==:3UFicQJU9iJAH7ITgi/0MsBRs0Al81OIIkwq9Qru0NPsuXsTT+tFOtKAf4JhZXI7
-      mapy-controller:
-        git: https://github.com/mapaction/mapactionpy_controller.git
-        branch: master
-        destination: mapy-controller
-      mapy-arcmap:
-        git: https://github.com/mapaction/mapactionpy_arcmap.git
-        branch: master
-        destination: mapy-arcmap
-    stages:
-      - stage-run-map-create:
-          jobs:
-            job-run-map-create:
-              resources:
-                - arcmap10-6
-              artifacts:
-                - build:
-                    source: outputmaps
-                    destination: maps
-              tasks:
-                - *task_venv
-                - *install_from_github
-                - *make_map
+  # kenya:
+  #   group: Per-Country-Map-Creation
+  #   display_order: -10
+  #   environment_variables:
+  #     MAPCHEF_EVENT_DESC: "\\\\192.168.106.24\\Crash-Move-Folder\\hotel\\20200601-kenya-oxfam\\event_description.json"
+  #     py: "env\\Scripts\\python.exe"
+  #   label_template: ${COUNT}
+  #   lock_behavior: unlockWhenFinished
+  #   materials:
+  #     mappipelines:
+  #       type: configrepo
+  #       destination: pipelines
+  #     default-cmf:
+  #       git: https://github.com/mapaction/default-crash-move-folder.git
+  #       destination: default-cmf
+  #       branch: master
+  #       username: mapaction-ci-servers
+  #       encrypted_password : AES:/tL+kSfanw1Vz+YhfX+C7g==:3UFicQJU9iJAH7ITgi/0MsBRs0Al81OIIkwq9Qru0NPsuXsTT+tFOtKAf4JhZXI7
+  #     mapy-controller:
+  #       git: https://github.com/mapaction/mapactionpy_controller.git
+  #       branch: master
+  #       destination: mapy-controller
+  #     mapy-arcmap:
+  #       git: https://github.com/mapaction/mapactionpy_arcmap.git
+  #       branch: master
+  #       destination: mapy-arcmap
+  #   stages:
+  #     - stage-run-map-create:
+  #         jobs:
+  #           job-run-map-create:
+  #             resources:
+  #               - arcmap10-6
+  #             artifacts:
+  #               - build:
+  #                   source: outputmaps
+  #                   destination: maps
+  #             tasks:
+  #               - *task_venv
+  #               - *install_from_github
+  #               - *make_map
