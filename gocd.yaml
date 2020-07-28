@@ -1,136 +1,19 @@
 format_version: 9
 common:
-  task_venv: &task_venv
-    - exec:
-        command: git
-        arguments:
-        - "-C"
-        - default-cmf
-        - lfs
-        - pull
+  task_create_pipeline: &task_create_pipeline
     - exec:
         command: cmd
         arguments:
           - "/c"
           - "C:/py27arcgis106/ArcGIS10.6/python.exe"
-          - "-m"
-          - virtualenv
-          - "--system-site-packages"
-          - env
-    - exec:
-        command: "%py%"
-        arguments:
-          - "-m"
-          - pip
-          - install
-          - coverage
-
-  install_stable: &install_stable
-    - exec:
-        command: "%py%"
-        arguments:
-          - "-m"
-          - pip
-          - install
-          - mapactionpy-controller
-    - exec:
-        command: "%py%"
-        arguments:
-          - "-m"
-          - pip
-          - install
-          - mapactionpy-arcmap
-
-  install_from_github: &install_from_github
-    - exec:
-        command: "%py%"
-        arguments:
-        - "-m"
-        - pip
-        - install
-        - "-e"
-        - mapy-controller
-    - exec:
-        command: "%py%"
-        arguments:
-        - "-m"
-        - pip
-        - install
-        - "-e"
-        - mapy-arcmap
-
-  make_map: &make_map
-    - exec:
-        command: "cmd"
-        arguments:
-          - "/c"
-          - "pipelines\\run-mapchef.cmd"
-
-  extract_maps: &extract_maps
-    - exec:
-        command: "robocopy"
-        arguments:
-          - "%cmf_path%\\GIS\\3_Mapping\\34_Map_Products_MapAction"
-          - outputmaps
-          - "/mir"
-          - "/NP"
-          - "*.jpg"
+          - "pipelines/create_new_country_pipeline.py"
 
 pipelines:
-  map-chef:
+  map-chef-new-event-pipeline:
     group: Map-Creation-Group
     display_order: -2
     environment_variables:
-      # MAPCHEF_EVENT_DESC: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite\\2019lka01\\event_description.json"
-      MAPCHEF_EVENT_DESC: not-set
-      # data_src: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\example_src_data"
-      # dest_root: "\\\\192.168.106.24\\Non-Mission\\development\\data_circle\\metis\\output-test-suite"
-      # default_cmf: default-cmf
-      # opidlist: "2019lka01 2019mli01 2019slv01"
-      py: "env\\Scripts\\python.exe"
-      # outputmaps: outputmaps
-    label_template: ${COUNT}
-    lock_behavior: unlockWhenFinished
-    materials:
-      mappipelines:
-        type: configrepo
-        destination: pipelines
-      default-cmf:
-        git: https://github.com/mapaction/default-crash-move-folder.git
-        destination: default-cmf
-        branch: master
-        username: mapaction-ci-servers
-        encrypted_password : AES:/tL+kSfanw1Vz+YhfX+C7g==:3UFicQJU9iJAH7ITgi/0MsBRs0Al81OIIkwq9Qru0NPsuXsTT+tFOtKAf4JhZXI7
-      mapy-controller:
-        git: https://github.com/mapaction/mapactionpy_controller.git
-        branch: master
-        destination: mapy-controller
-      mapy-arcmap:
-        git: https://github.com/mapaction/mapactionpy_arcmap.git
-        branch: master
-        destination: mapy-arcmap
-    stages:
-      - stage-run-map-create:
-          jobs:
-            job-run-map-create:
-              resources:
-                - arcmap10-6
-              artifacts:
-                - build:
-                    source: outputmaps
-                    destination: maps
-              tasks:
-                - *task_venv
-                - *install_from_github
-                - *make_map
-                # - *extract_maps
-
-
-  kenya:
-    group: Per-Country-Map-Creation
-    display_order: -10
-    environment_variables:
-      MAPCHEF_EVENT_DESC: "\\\\192.168.106.24\\Crash-Move-Folder\\hotel\\20200601-kenya-oxfam\\event_description.json"
+      MAPCHEF_EVENT_DESC_PATH: "NOT_SET"
       py: "env\\Scripts\\python.exe"
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
@@ -138,31 +21,13 @@ pipelines:
       mappipelines:
         type: configrepo
         destination: pipelines
-      default-cmf:
-        git: https://github.com/mapaction/default-crash-move-folder.git
-        destination: default-cmf
-        branch: master
-        username: mapaction-ci-servers
-        encrypted_password : AES:/tL+kSfanw1Vz+YhfX+C7g==:3UFicQJU9iJAH7ITgi/0MsBRs0Al81OIIkwq9Qru0NPsuXsTT+tFOtKAf4JhZXI7
-      mapy-controller:
-        git: https://github.com/mapaction/mapactionpy_controller.git
-        branch: master
-        destination: mapy-controller
-      mapy-arcmap:
-        git: https://github.com/mapaction/mapactionpy_arcmap.git
-        branch: master
-        destination: mapy-arcmap
     stages:
-      - stage-run-map-create:
+      - stage-create-pipeline:
           jobs:
-            job-run-map-create:
+            job-create-pipeline:
               resources:
                 - arcmap10-6
-              artifacts:
-                - build:
-                    source: outputmaps
-                    destination: maps
+                - hqfileserver
+                - mapchef
               tasks:
-                - *task_venv
-                - *install_from_github
-                - *make_map
+                - *task_create_pipeline
