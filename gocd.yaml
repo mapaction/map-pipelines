@@ -17,7 +17,7 @@ common:
           - "C:/py27arcgis106/ArcGIS10.6/python.exe"
           - "pipelines/create_new_country_pipeline.py"
 pipelines:
-  map-chef-new-event-pipeline:
+  update-event-pipeline:
     group: Map-Creation-Group
     display_order: -2
     environment_variables:
