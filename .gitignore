@@ -4,3 +4,4 @@ htmlcov/
 outputmaps/
 tempoutputs/
 .coverage
+.vscode/settings.json

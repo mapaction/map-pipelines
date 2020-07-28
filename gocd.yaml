@@ -6,8 +6,16 @@ common:
         arguments:
           - "/c"
           - "C:/py27arcgis106/ArcGIS10.6/python.exe"
+          - "-m"
+          - pip
+          - install
+          - git+https://github.com/andrewphilipsmith/gocdapi.git
+    - exec:
+        command: cmd
+        arguments:
+          - "/c"
+          - "C:/py27arcgis106/ArcGIS10.6/python.exe"
           - "pipelines/create_new_country_pipeline.py"
-
 pipelines:
   map-chef-new-event-pipeline:
     group: Map-Creation-Group
