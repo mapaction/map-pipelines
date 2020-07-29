@@ -22,7 +22,6 @@ pipelines:
     display_order: -2
     environment_variables:
       MAPCHEF_EVENT_DESC_PATH: "NOT_SET"
-      py: "env\\Scripts\\python.exe"
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
     materials:
