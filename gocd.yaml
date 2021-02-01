@@ -36,6 +36,7 @@ pipelines:
               resources:
                 - arcmap10-6
                 - hqfileserver
+                - g-drive
                 - mapchef
               tasks:
                 - *task_create_pipeline
