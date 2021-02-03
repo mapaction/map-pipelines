@@ -5,6 +5,7 @@ import netrc
 import os
 import sys
 import xml.etree.ElementTree as ET
+import traceback
 
 from gocdapi import admin, pipeline
 from gocdapi.go import Go
@@ -37,9 +38,24 @@ def get_gocd_server():
     return go_server
 
 
+def dequote(s):
+    """
+    From https://stackoverflow.com/a/20577580
+
+    If a string has single or double quotes around it, remove them.
+    Make sure the pair of quotes match.
+    If a matching pair of quotes is not found, return the string unchanged.
+    """
+    if (s[0] == s[-1]) and s.startswith(("'", '"')):
+        return s[1:-1]
+    return s
+
 def get_new_event_details():
     try:
         new_event_desc_path = os.environ['mapchef_event_desc_path']
+        print(new_event_desc_path)
+        new_event_desc_path = dequote(new_event_desc_path)
+        print(new_event_desc_path)
     except KeyError as ke:
         logging.error('Unable to find an input event description file. Please set'
                       ' the environment variable "mapchef_event_desc_path"')
@@ -59,7 +75,17 @@ def get_new_event_details():
     return event_id, new_event_desc_path
 
 def get_pipeline_pattern(go_server):
+    # try:
+    #     all_pipelines = go_server.pipelines
+    #     print('got all_pipelines')
+    #     # print('\n'.join(all_pipelines.keys()))
+    # except Exception as exp:
+    #     # traceback.print_exception(type(exp), exp, None)
+    #     # traceback.print_exc()
+    #     pass
+
     master_pln = go_server.get_pipeline('per-country-pattern')
+    print('got master_pln. attempting to convert to xml')
     return master_pln.get_config_xml(to_string=False)
 
 
@@ -68,7 +94,8 @@ def create_new_pipeline_xml(master_pipe, event_id, new_event_desc_path):
 
     xpath_str = ".//environmentvariables/variable[@name='event_desc_path']/value"
     for val in (master_pipe.findall(xpath_str)):
-        val.text = new_event_desc_path
+        # val.text = new_event_desc_path
+        val.text = '"{}"'.format(new_event_desc_path)
 
     return ET.tostring(master_pipe)
 
@@ -87,7 +114,9 @@ if __name__ == "__main__":
     try:
         go_server = get_gocd_server()
         event_id, new_event_desc_path = get_new_event_details()
+        print('new_event_desc_path=[{}]'.format(new_event_desc_path))
         master_pipe = get_pipeline_pattern(go_server)
+        print('Attempting to create xml for new/updated pipeline')
         new_pipe_xml = create_new_pipeline_xml(master_pipe, event_id, new_event_desc_path)
         apply_pipeline_to_gocd(go_server, new_pipe_xml, event_id)
     except Exception as exp:
