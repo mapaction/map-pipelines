@@ -9,6 +9,7 @@ common:
           - "-m"
           - pip
           - install
+          - "--upgrade"
           - git+https://github.com/andrewphilipsmith/gocdapi.git
     - exec:
         command: cmd
