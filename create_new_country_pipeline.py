@@ -11,6 +11,21 @@ from gocdapi import admin, pipeline
 from gocdapi.go import Go
 
 
+import pycountry
+from slugify import slugify
+
+
+def get_slugified_name(event_id):
+
+    country = pycountry.countries.get(alpha_3=event_id.upper())
+
+    if country:
+        return slugify(country.name)
+    else:
+        print("didn't find {}".format(event_id))
+        return event_id
+
+
 def get_gocd_server():
     gocd_hostname = 'gocd.mapaction.org'
 
@@ -89,8 +104,8 @@ def get_pipeline_pattern(go_server):
     return master_pln.get_config_xml(to_string=False)
 
 
-def create_new_pipeline_xml(master_pipe, event_id, new_event_desc_path):
-    master_pipe.attrib['name'] = event_id
+def create_new_pipeline_xml(master_pipe, pipeline_name, new_event_desc_path):
+    master_pipe.attrib['name'] = pipeline_name
 
     xpath_str = ".//environmentvariables/variable[@name='event_desc_path']/value"
     for val in (master_pipe.findall(xpath_str)):
@@ -100,25 +115,26 @@ def create_new_pipeline_xml(master_pipe, event_id, new_event_desc_path):
     return ET.tostring(master_pipe)
 
 
-def apply_pipeline_to_gocd(go_server, new_pipe_xml, event_id):
+def apply_pipeline_to_gocd(go_server, new_pipe_xml, pipeline_name):
 
-    if go_server.pipeline_exist(event_id):
+    if go_server.pipeline_exist(pipeline_name):
         go_server.admin.update_pipeline_from_xml(new_pipe_xml)
-        logging.info('Pipeline "{}" was successfully updated'.format(event_id))
+        logging.info('Pipeline "{}" was successfully updated'.format(pipeline_name))
     else:
         go_server.admin.create_pipeline_from_xml('Per-Country-Map-Creation', new_pipe_xml)
-        logging.info('Pipeline "{}" was successfully created'.format(event_id))
+        logging.info('Pipeline "{}" was successfully created'.format(pipeline_name))
 
 
 if __name__ == "__main__":
     try:
         go_server = get_gocd_server()
         event_id, new_event_desc_path = get_new_event_details()
+        pipeline_name = get_slugified_name(event_id)
         print('new_event_desc_path=[{}]'.format(new_event_desc_path))
         master_pipe = get_pipeline_pattern(go_server)
         print('Attempting to create xml for new/updated pipeline')
-        new_pipe_xml = create_new_pipeline_xml(master_pipe, event_id, new_event_desc_path)
-        apply_pipeline_to_gocd(go_server, new_pipe_xml, event_id)
+        new_pipe_xml = create_new_pipeline_xml(master_pipe, pipeline_name, new_event_desc_path)
+        apply_pipeline_to_gocd(go_server, new_pipe_xml, pipeline_name)
     except Exception as exp:
         logging.error(exp)
         sys.exit(1)
