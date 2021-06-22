@@ -10,6 +10,16 @@ common:
           - pip
           - install
           - "--upgrade"
+          - pip    
+    - exec:
+        command: cmd
+        arguments:
+          - "/c"
+          - "C:/py27arcgis106/ArcGIS10.6/python.exe"
+          - "-m"
+          - pip
+          - install
+          - "--upgrade"
           - git+https://github.com/andrewphilipsmith/gocdapi.git
     - exec:
         command: cmd
